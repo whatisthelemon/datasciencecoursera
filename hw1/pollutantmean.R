@@ -13,8 +13,7 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
     ## in the 'id' vector (ignoring NA values)
 
     #open from directory
-    data <- read.csv(directory)
-    
-    
-  
+    filenames <- list.files(path=directory)
+    filenames <- paste(directory, "/", filenames, sep="")
+    data <- cbind(lapply(filenames, read.csv))
 }
