@@ -33,6 +33,8 @@ corr <- function(directory, threshold = 0) {
         cr <- c(cr, cor(tempdata$sulfate, tempdata$nitrate))
     }
     
+    #remove nas and return
+    cr <- cr[!is.na(cr)]
     return(cr)
 }
 
