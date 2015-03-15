@@ -1,27 +1,30 @@
-pollutantmean <- function(directory, pollutant, id = 1:332) {
+complete <- function(directory, id = 1:332) {
     ## 'directory' is a character vector of length 1 indicating
     ## the location of the CSV files
-    
-    ## 'pollutant' is a character vector of length 1 indicating
-    ## the name of the pollutant for which we will calculate the
-    ## mean; either "sulfate" or "nitrate".
     
     ## 'id' is an integer vector indicating the monitor ID numbers
     ## to be used
     
-    ## Return the mean of the pollutant across all monitors list
-    ## in the 'id' vector (ignoring NA values)
-
-    #open from directory
+    ## Return a data frame of the form:
+    ## id nobs
+    ## 1  117
+    ## 2  1041
+    ## ...
+    ## where 'id' is the monitor ID number and 'nobs' is the
+    ## number of complete cases
     data <- extractmulticsv(directory)
+    completes <- complete.cases(data)
     
-    #figure out which ids
-    onestoselectfrom <- data$ID %in% id
+    nobs <- vector('integer')
     
-    #extract mean
-    return (mean(data[, pollutant][onestoselectfrom], na.rm=TRUE))
+    for(i in id){
+        temp <- data$ID==i & completes
+        s <- sum(temp)
+        nobs <- c(nobs, s)
+    }
+    
+    return(data.frame(id, nobs))
 }
-
 
 extractmulticsv <- function(directory="."){
     filenames <- list.files(path=directory)
@@ -32,4 +35,3 @@ extractmulticsv <- function(directory="."){
     }
     return (data)
 }
-    
