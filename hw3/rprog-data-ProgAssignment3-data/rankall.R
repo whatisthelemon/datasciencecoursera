@@ -43,19 +43,19 @@ rankall <- function(outcome, num = "best") {
             1
         }
         else if(num=="worst"){
-            sum(!is.na(data[,outcome]))
+            sum(!is.na(stateData[,outcome]))
         }
         else{
             as.numeric(num)
         }
         
         #get the ordering permutation
-        ordered <- order(-stateData[,outcome], stateData[,"HOSPITAL.NAME"])
+        ordered <- order(stateData[,outcome], stateData[,"HOSPITAL.NAME"])
         
         index <- ordered[rank]
         
         ret[i,"hospital"] <- stateData[index,"HOSPITAL.NAME"]
     }
     
-    return (ret)
+    return (data.frame(ret))
 }
